@@ -79,4 +79,7 @@ email_to_helpdesk = ['W_Abdelrahman.Ataa@EgyptPost.Org',
                      'W_Salah.mohamed@EgyptPost.Org',
                         'w_mtaha@EgyptPost.Org',
                         'w_salmoatasem@EgyptPost.Org',
+                        "W_Yosra.Mahmoud@EgyptPost.Org",
+                        "W_Khlowd.Ahmed@EgyptPost.Org",
+                        "w_Raghda_Fawzy@EgyptPost.Org",
                         'Ahmed.Mourad@EgyptPost.Org']
