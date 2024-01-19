@@ -9,6 +9,7 @@ import openpyxl
 import datetime
 from send_mail import send_email_with_attendance,email_to_helpdesk,email_to_soc,email_to_noc
 import concurrent.futures
+import datetime
 
 now = datetime.datetime.now()
 current_data = f"{str(now.year)}/{str(now.month).zfill(2)}/{str(now.day).zfill(2)}"
@@ -154,6 +155,9 @@ def soc_fun(sheet_name):
 
 result_soc = soc_fun("HELPDESK")
 
+now = datetime.datetime.now()
+hour = now.hour
+
 
 IN_count_help = 0
 OUT_count_help = 0
@@ -164,4 +168,16 @@ for item in result_soc:
     else:
         OUT_count_help += 1
 
-send_email_with_attendance(result_soc,email_to_soc,"Help Desk team",IN_count_help,OUT_count_help)
+if (IN_count_help < 6) and (hour == 7 or hour == 8) or OUT_count_help > 0:
+    send_email_with_attendance(result_soc,email_to_helpdesk,"HelpDesk Team",IN_count_help,OUT_count_help, subject=" Attendance Report 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴")
+elif (IN_count_help < 9) and (hour == 9 or hour == 10) or OUT_count_help > 0:
+    send_email_with_attendance(result_soc,email_to_helpdesk,"HelpDesk Team",IN_count_help,OUT_count_help, subject=" Attendance Report 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴")
+elif (IN_count_help < 12) and (hour == 2 or hour == 3):
+    send_email_with_attendance(result_soc,email_to_helpdesk,"HelpDesk Team",IN_count_help,OUT_count_help, subject=" Attendance Report 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴")
+elif (IN_count_help < 3) and (hour == 5 or hour == 6 ):
+    send_email_with_attendance(result_soc,email_to_helpdesk,"HelpDesk Team",IN_count_help,OUT_count_help, subject=" Attendance Report 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴")
+elif (IN_count_help != 0) and (hour == 10 or hour == 11 ):
+    send_email_with_attendance(result_soc,email_to_helpdesk,"HelpDesk Team",IN_count_help,OUT_count_help, subject=" Attendance Report 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴")
+
+else:
+    send_email_with_attendance(result_soc,email_to_helpdesk,"HelpDesk Team",IN_count_help,OUT_count_help)

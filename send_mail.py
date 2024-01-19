@@ -4,12 +4,13 @@ from email.message import EmailMessage
 from tabulate import tabulate
 
 
-def send_email_with_attendance(attendance, email_to,team, login_count,logout_count):    # Email configuration
+def send_email_with_attendance(attendance, email_to,team, login_count,logout_count,subject=None):    # Email configuration
     smtp_host = 'mail.egyptpost.org'
     smtp_port = 25  # Update the port if necessary
     sender_email = 'W_Abdelrahman.Ataa@EgyptPost.Org'
     recipient_emails = email_to
-    subject = 'Attendance Report'
+    if subject == None:
+        subject = 'Attendance Report'
 
     # Convert attendance data to a tabulated HTML table with custom CSS styling
     table = tabulate(attendance, headers="keys", tablefmt="html")
@@ -69,17 +70,21 @@ def send_email_with_attendance(attendance, email_to,team, login_count,logout_cou
 email_to_soc = ['W_Abdelrahman.Ataa@EgyptPost.Org',
                         'w_soc_team@egyptpost.org',
                         'SOC_supervisors@EgyptPost.Org',
-                        'Ahmed.Mourad@EgyptPost.Org']
+                        'Ahmed.Mourad@EgyptPost.Org',
+                        'Alnasser.mohamed@EgyptPost.Org']
 
 email_to_noc = ['W_Abdelrahman.Ataa@EgyptPost.Org',
                         'W_NOC@EgyptPost.Org',
-                        'Ahmed.Mourad@EgyptPost.Org']
+                        'Ahmed.Mourad@EgyptPost.Org',
+                        'Alnasser.mohamed@EgyptPost.Org']
 
 email_to_helpdesk = ['W_Abdelrahman.Ataa@EgyptPost.Org',
                      'W_Salah.mohamed@EgyptPost.Org',
                         'w_mtaha@EgyptPost.Org',
                         'w_salmoatasem@EgyptPost.Org',
-                        "W_Yosra.Mahmoud@EgyptPost.Org",
-                        "W_Khlowd.Ahmed@EgyptPost.Org",
-                        "w_Raghda_Fawzy@EgyptPost.Org",
-                        'Ahmed.Mourad@EgyptPost.Org']
+                        'Ahmed.Mourad@EgyptPost.Org',
+                        'w_Ahmed_Mosaad@EgyptPost.Org',
+                        'ahmed_qorany@EgyptPost.Org',
+                        'mohamedgamal@EgyptPost.Org',
+                        'Alnasser.mohamed@EgyptPost.Org'    
+                        ]
