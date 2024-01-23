@@ -10,6 +10,13 @@ import datetime
 from send_mail import send_email_with_attendance,email_to_helpdesk,email_to_soc,email_to_noc
 import concurrent.futures
 import datetime
+import os
+from dotenv import load_dotenv
+from time import sleep
+env_path = "C:\\env\\Finger_Print\\.env"  
+load_dotenv(dotenv_path=env_path)
+
+
 
 now = datetime.datetime.now()
 current_data = f"{str(now.year)}/{str(now.month).zfill(2)}/{str(now.day).zfill(2)}"
@@ -18,7 +25,7 @@ class InstaBot:
     def __init__(self,username,password):  
         #webdriver
         try:
-            serv_obj = service= Service(r'\\10.199.199.35\soc team\Abdelrahman Ataa\Finger_print\geckodriver.exe')
+            serv_obj = service= Service(os.getenv("geckodriver"))
             # serv_obj = service= Service(r'geckodriver')
             ops=webdriver.FirefoxOptions()
             self.driver = webdriver.Firefox(service=serv_obj,options=ops)
@@ -30,7 +37,7 @@ class InstaBot:
             #try to use chromedriver instead
         if not hasattr(self, 'driver'):
             try:
-                serv_obj = service= Service(r'\\10.199.199.35\soc team\Abdelrahman Ataa\Finger_print\chromedriver.exe')
+                serv_obj = service= Service(os.getenv("chromedriver"))
                 # serv_obj = Service(r'chromedriver')
                 ops = webdriver.ChromeOptions()
                 self.driver = webdriver.Chrome(service=serv_obj, options=ops)
@@ -118,7 +125,7 @@ class InstaBot:
 
 
 
-sheet_path  = r'\\10.199.199.35\soc team\Abdelrahman Ataa\Finger_print\finger_print.xlsx'
+sheet_path  = os.getenv("sheet_path")
 # sheet_path  = r'finger_print.xlsx'
 
 wb = openpyxl.load_workbook(sheet_path)
@@ -153,7 +160,7 @@ def soc_fun(sheet_name):
     return attendance
 
 
-result_soc = soc_fun("HELPDESK")
+result_soc = soc_fun("SOC")
 
 now = datetime.datetime.now()
 hour = now.hour
@@ -168,16 +175,9 @@ for item in result_soc:
     else:
         OUT_count_help += 1
 
-if (IN_count_help < 6) and (hour == 7 or hour == 8) or OUT_count_help > 0:
-    send_email_with_attendance(result_soc,email_to_helpdesk,"HelpDesk Team",IN_count_help,OUT_count_help, subject=" Attendance Report 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴")
-elif (IN_count_help < 9) and (hour == 9 or hour == 10) or OUT_count_help > 0:
-    send_email_with_attendance(result_soc,email_to_helpdesk,"HelpDesk Team",IN_count_help,OUT_count_help, subject=" Attendance Report 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴")
-elif (IN_count_help < 12) and (hour == 2 or hour == 3):
-    send_email_with_attendance(result_soc,email_to_helpdesk,"HelpDesk Team",IN_count_help,OUT_count_help, subject=" Attendance Report 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴")
-elif (IN_count_help < 3) and (hour == 5 or hour == 6 ):
-    send_email_with_attendance(result_soc,email_to_helpdesk,"HelpDesk Team",IN_count_help,OUT_count_help, subject=" Attendance Report 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴")
-elif (IN_count_help != 0) and (hour == 10 or hour == 11 ):
-    send_email_with_attendance(result_soc,email_to_helpdesk,"HelpDesk Team",IN_count_help,OUT_count_help, subject=" Attendance Report 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴")
-
+if (IN_count_help != 5 and (hour == 7 or hour == 8)) or (OUT_count_help != 5 and (hour == 7 or hour == 8)):
+    send_email_with_attendance(result_soc,email_to_soc,"SOC Team",IN_count_help,OUT_count_help, subject=" Attendance Report 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴")
+elif (IN_count_help != 5 and (hour == 19 or hour == 20 or hour == 23)) :
+    send_email_with_attendance(result_soc,email_to_soc,"SOC Team",IN_count_help,OUT_count_help, subject=" Attendance Report 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴")
 else:
-    send_email_with_attendance(result_soc,email_to_helpdesk,"HelpDesk Team",IN_count_help,OUT_count_help)
+    send_email_with_attendance(result_soc,email_to_soc,"SOC Team",IN_count_help,OUT_count_help)
