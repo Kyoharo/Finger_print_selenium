@@ -76,7 +76,10 @@ email_to_soc = ['W_Abdelrahman.Ataa@EgyptPost.Org',
 email_to_noc = ['W_Abdelrahman.Ataa@EgyptPost.Org',
                         'W_NOC@EgyptPost.Org',
                         'Ahmed.Mourad@EgyptPost.Org',
-                        'Alnasser.mohamed@EgyptPost.Org']
+                        'Alnasser.mohamed@EgyptPost.Org'
+                        'w_Ahmed_Mosaad@EgyptPost.Org',
+                        'ahmed_qorany@EgyptPost.Org',
+                        'mohamedgamal@EgyptPost.Org']
 
 email_to_helpdesk = ['W_Abdelrahman.Ataa@EgyptPost.Org',
                      'W_Salah.mohamed@EgyptPost.Org',
