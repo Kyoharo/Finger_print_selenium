@@ -9,6 +9,14 @@ import openpyxl
 import datetime
 from send_mail import send_email_with_attendance,email_to_helpdesk,email_to_soc,email_to_noc
 import concurrent.futures
+import datetime
+import os
+from dotenv import load_dotenv
+from time import sleep
+env_path = "C:\\env\\Finger_Print\\.env"  
+load_dotenv(dotenv_path=env_path)
+
+
 
 now = datetime.datetime.now()
 current_data = f"{str(now.year)}/{str(now.month).zfill(2)}/{str(now.day).zfill(2)}"
@@ -17,8 +25,8 @@ class InstaBot:
     def __init__(self,username,password):  
         #webdriver
         try:
-            # serv_obj = service= Service(r'\\10.199.199.35\soc team\Abdelrahman Ataa\Finger_print\geckodriver.exe')
-            serv_obj = service= Service(r'geckodriver')
+            serv_obj = service= Service(os.getenv("geckodriver"))
+            # serv_obj = service= Service(r'geckodriver')
             ops=webdriver.FirefoxOptions()
             self.driver = webdriver.Firefox(service=serv_obj,options=ops)
             self.driver.get("http://10.70.201.21/cgi-bin/login.cgi?command=0")
@@ -29,7 +37,8 @@ class InstaBot:
             #try to use chromedriver instead
         if not hasattr(self, 'driver'):
             try:
-                serv_obj = Service(r'chromedriver')
+                serv_obj = service= Service(os.getenv("chromedriver"))
+                # serv_obj = Service(r'chromedriver')
                 ops = webdriver.ChromeOptions()
                 self.driver = webdriver.Chrome(service=serv_obj, options=ops)
                 self.driver.get("http://10.70.201.21/cgi-bin/login.cgi?command=0")
@@ -116,8 +125,8 @@ class InstaBot:
 
 
 
-# sheet_path  = r'\\10.199.199.35\soc team\Abdelrahman Ataa\Finger_print\finger_print.xlsx'
-sheet_path  = r'finger_print.xlsx'
+sheet_path  = os.getenv("sheet_path")
+# sheet_path  = r'finger_print.xlsx'
 
 wb = openpyxl.load_workbook(sheet_path)
 sheet_names = wb.sheetnames
@@ -150,35 +159,25 @@ def soc_fun(sheet_name):
             data = get_data(id,passwd,attendance,username)
     return attendance
 
-if __name__ == "__main__":
-    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-        future_soc = executor.submit(soc_fun, "SOC")
-        future_noc = executor.submit(soc_fun, "NOC")
 
-        # Wait for both tasks to complete
-        concurrent.futures.wait([future_soc, future_noc])
+result_soc = soc_fun("NOC")
 
-        # Retrieve the results
-        result_soc = future_soc.result()
-        result_noc = future_noc.result()
+now = datetime.datetime.now()
+hour = now.hour
 
-    print("Processing of both sheets 'SOC' and 'NOC' has completed.")
-    print("Results for 'SOC':", result_soc)
-    print("Results for 'NOC':", result_noc)
-IN_count_soc = 0
-OUT_count_soc = 0
-IN_count_noc = 0
-OUT_count_noc = 0
+
+IN_count_help = 0
+OUT_count_help = 0
+
 for item in result_soc:
     if item['Trigger'] == 'IN':
-        IN_count_soc += 1
+        IN_count_help += 1
     else:
-        OUT_count_soc += 1
-for item in result_noc:
-    if item['Trigger'] == 'IN':
-        IN_count_noc += 1
-    else:
-        OUT_count_noc += 1
+        OUT_count_help += 1
 
-send_email_with_attendance(result_soc,email_to_soc,"SOC Team",IN_count_soc,OUT_count_soc)
-send_email_with_attendance(result_noc,email_to_noc,"NOC Team",IN_count_noc,OUT_count_noc)
+if (IN_count_help != 9 and (hour == 7 or hour == 8)) or (OUT_count_help != 3 and (hour == 7 or hour == 8)):
+    send_email_with_attendance(result_soc,email_to_noc,"Noc Team",IN_count_help,OUT_count_help, subject=" Attendance Report 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴")
+elif (IN_count_help != 3 and (hour == 19 or hour == 20 or hour == 23)) :
+    send_email_with_attendance(result_soc,email_to_noc,"Noc Team",IN_count_help,OUT_count_help, subject=" Attendance Report 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴")
+else:
+    send_email_with_attendance(result_soc,email_to_noc,"Noc Team",IN_count_help,OUT_count_help)

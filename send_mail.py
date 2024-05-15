@@ -67,27 +67,8 @@ def send_email_with_attendance(attendance, email_to,team, login_count,logout_cou
 
 
 
-email_to_soc = ['W_Abdelrahman.Ataa@EgyptPost.Org',
-                        'w_soc_team@egyptpost.org',
-                        'SOC_supervisors@EgyptPost.Org',
-                        'Ahmed.Mourad@EgyptPost.Org',
-                        'Alnasser.mohamed@EgyptPost.Org']
+email_to_soc = []#recever mails here 
 
-email_to_noc = ['W_Abdelrahman.Ataa@EgyptPost.Org',
-                        'W_NOC@EgyptPost.Org',
-                        'Ahmed.Mourad@EgyptPost.Org',
-                        'Alnasser.mohamed@EgyptPost.Org'
-                        'w_Ahmed_Mosaad@EgyptPost.Org',
-                        'ahmed_qorany@EgyptPost.Org',
-                        'mohamedgamal@EgyptPost.Org']
+email_to_noc = [] #recever mails here 
 
-email_to_helpdesk = ['W_Abdelrahman.Ataa@EgyptPost.Org',
-                     'W_Salah.mohamed@EgyptPost.Org',
-                        'w_mtaha@EgyptPost.Org',
-                        'w_salmoatasem@EgyptPost.Org',
-                        'Ahmed.Mourad@EgyptPost.Org',
-                        'w_Ahmed_Mosaad@EgyptPost.Org',
-                        'ahmed_qorany@EgyptPost.Org',
-                        'mohamedgamal@EgyptPost.Org',
-                        'Alnasser.mohamed@EgyptPost.Org'    
-                        ]
+email_to_helpdesk = [ ] ##recever mails here 
